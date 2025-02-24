@@ -1,0 +1,50 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+// Async thunk to fetch marks
+export const fetchStudentMarksByPhone = createAsyncThunk(
+  "exams/fetchStudentMarksByPhone",
+  async ({ phone, classId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5559/api/exams/marks-by-phone`,
+        { phone, classId }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
+const markSlice = createSlice({
+  name: "exams",
+  initialState: {
+    studentMarks: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    setStudentMarks: (state, action) => {
+      state.studentMarks = action.payload; // Store marks globally
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchStudentMarksByPhone.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchStudentMarksByPhone.fulfilled, (state, action) => {
+        state.loading = false;
+        state.studentMarks = action.payload;
+      })
+      .addCase(fetchStudentMarksByPhone.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export const { setStudentMarks } = markSlice.actions; // Export the action
+export default markSlice.reducer;
