@@ -13,7 +13,7 @@ import studentMark from "./slice/markSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["mark"], // Persist only markSlice (You can add other slices as needed)
+  whitelist: ["mark"], 
 };
 
 const rootReducer = combineReducers({

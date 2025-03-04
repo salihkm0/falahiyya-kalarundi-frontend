@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import { LoginPage } from "../pages/authPages/LoginPage";
 import { RegisterPage } from "../pages/authPages/RegisterPage";
-import { AdminLayout } from "../layout/AdminLayout";
 import { StudentLayout } from "../layout/StudentLayout";
 import { HomePage } from "../pages/HomePage";
 import { ResultPage } from "../pages/ResultPage";
+import { LoadingPage } from "../pages/LoadingPage";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomePage />,
+    element: <LoadingPage />,
   },
   {
     element: <StudentLayout />,
@@ -31,19 +31,5 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
     ],
-  },
-  // admin routes
-  {
-    element: <AdminLayout />,
-    // children: [
-    //   {
-    //     path: "/admin/dashboard",
-    //     element: <AdminDashboard />,
-    //   },
-    //   {
-    //     path: "/products/add",
-    //     element: <AddProductPage />,
-    //   },
-    // ],
   },
 ]);

@@ -1,12 +1,21 @@
-import React from "react";
-import { StudentResultCard } from "./components/cards/StudentCard-1";
-import { StudentCard_2 } from "./components/cards/StudentCard-2";
+import React, { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/Router";
-// import { School, EmojiEvents, Person } from '@mui/icons-material';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchExams } from "./redux/slice/examSlice";
+import { fetchClasses } from "./redux/slice/classSlice";
+
 export const App = () => {
-  
-  return (
-    <RouterProvider router={router} />
-  );
+  const dispatch = useDispatch();
+  const { exams } = useSelector((state) => state.exam);
+  const { classes } = useSelector((state) => state.class);
+
+  useEffect(() => {
+    dispatch(fetchExams());
+    dispatch(fetchClasses());
+  }, [dispatch]);
+
+  console.log("Fetching classes:", classes, "Exams:", exams);
+
+  return <RouterProvider router={router} />;
 };

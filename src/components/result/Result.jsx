@@ -1,43 +1,39 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StudentResultCard } from "../cards/StudentCard-1";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
-import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-const DownloadButton = styled.button`
-  background: #10b981;
-  color: white;
-  font-size: 16px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin-top: 20px;
-
-  &:hover {
-    background: #059669;
-  }
-`;
-
 export const Result = () => {
-  const pdfRef = useRef();
   const [studentData, setStudentData] = useState(null);
   const res = useSelector((state) => state.mark.studentMarks);
+  const { classes } = useSelector((state) => state.class);
 
   useEffect(() => {
-    if (res) {
-      const totalObtained = res.exams.reduce(
-        (sum, exam) => sum + exam.marks.obtainedMark,
-        0
+    if (res && classes.length > 0) {
+      const studentClass = classes.find(
+        (cls) => cls._id === res.student.classNumber
       );
-      const totalMarks = res.exams.reduce(
-        (sum, exam) => sum + exam.marks.totalMark,
-        0
-      );
+      const className = studentClass ? studentClass.classNumber : "Unknown";
+
+      let totalObtained = 0;
+      let totalMarks = 0;
+
+      const marksData = res.exams.map((exam) => {
+        const subjectNames = exam.subjects
+          .map((sub) => sub.subjectName)
+          .join("/");
+        totalObtained += exam.marks.obtainedMark;
+        totalMarks += exam.marks.totalMark;
+
+        return {
+          name: subjectNames,
+          obtained: exam.marks.obtainedMark,
+          total: exam.marks.totalMark,
+          percentage: (
+            (exam.marks.obtainedMark / exam.marks.totalMark) *
+            100
+          ).toFixed(2),
+        };
+      });
 
       const percentage = (totalObtained / totalMarks) * 100;
 
@@ -50,16 +46,16 @@ export const Result = () => {
         (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 80
       );
       const allAbove70 = res.exams.every(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 70
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 60
       );
       const allAbove50 = res.exams.every(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 50
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 40
       );
       const allAbove30 = res.exams.every(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 30
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 18
       );
       const anyBelow30 = res.exams.some(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 < 30
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 < 18
       );
 
       if (allAbove97) rank = "Top Plus";
@@ -72,58 +68,41 @@ export const Result = () => {
       const formattedData = {
         name: res.student.name,
         rollNo: res.student.rollNo,
+        guardian: res.student.guardian,
         regNo: res.student.regNo,
         mobile: res.student.mobile,
+        class: className,
         totalObtained,
         totalMarks,
         percentage: percentage.toFixed(2),
         rank,
-        marks: res.exams.map((exam) => ({
-          name: exam.subject.subjectName,
-          obtained: exam.marks.obtainedMark,
-          total: exam.marks.totalMark,
-          percentage: ((exam.marks.obtainedMark / exam.marks.totalMark) * 100).toFixed(2),
-        })),
+        marks: marksData,
       };
       setStudentData(formattedData);
     }
-  }, [res]);
-
-  const handleDownloadPdf = async () => {
-    const element = pdfRef.current;
-    const scale = window.devicePixelRatio || 2;
-
-    const canvas = await html2canvas(element, {
-      scale: scale,
-      useCORS: true,
-      taintTest: false,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const margin = 10;
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgWidth = pageWidth - 2 * margin;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", margin, 20, imgWidth, imgHeight);
-    pdf.save(`${studentData?.name}_Result.pdf`);
-  };
+  }, [res, classes]);
 
   if (!studentData) return <p>Loading...</p>;
 
+  const isFailed = studentData.rank === "Failed";
+
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center" ref={pdfRef}>
+      <div className="min-h-screen flex flex-col items-center">
         <h1 className="text-3xl font-bold text-gray-800 text-center">
-          Welcome to AL Madrassathul Falahiyya Kalarundi
+          AL Madrassathul Falahiyya Kalarundi
         </h1>
         <p className="text-lg text-gray-600">Exam Result Board</p>
 
         <div className="bg-white shadow-lg rounded-xl p-6 mt-6 text-center w-full max-w-md">
-          <p className="text-xl text-green-600 font-semibold">
-            Congratulations, {studentData.name}! You {studentData.rank === "Failed" ? "Failed" : "Passed"} The Exam
+          <p
+            className={`text-xl font-semibold ${
+              isFailed ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {isFailed
+              ? `Sorry, ${studentData.name}. You have failed the exam. Better luck next time!`
+              : `Congratulations, ${studentData.name}! You Passed The Exam`}
           </p>
           <div className="text-4xl font-bold text-gray-800 my-4">
             {studentData.totalObtained}/{studentData.totalMarks}
@@ -132,20 +111,26 @@ export const Result = () => {
             Percentage: {studentData.percentage}%
           </p>
           <p className="text-lg text-gray-700 font-semibold">
-            Rank: <span className="text-blue-600">{studentData.rank}</span>
+            Rank:{" "}
+            <span
+              className={`${
+                isFailed ? "text-red-600" : "text-blue-600"
+              } font-bold`}
+            >
+              {studentData.rank}
+            </span>
+          </p>
+          <p className="text-lg text-gray-700 font-semibold">
+            Class: <span className="text-blue-600">{studentData.class}</span>
           </p>
         </div>
 
         <div className="mt-10 w-full">
           <div className="grid grid-cols-1 gap-4 mt-4">
-            <StudentResultCard student={studentData} />
+            <StudentResultCard student={studentData} isFailed = {isFailed}/>
           </div>
         </div>
       </div>
-
-      <DownloadButton onClick={handleDownloadPdf}>
-        ⬇ Download PDF
-      </DownloadButton>
     </>
   );
 };
