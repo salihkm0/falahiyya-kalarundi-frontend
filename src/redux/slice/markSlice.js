@@ -7,7 +7,7 @@ export const fetchStudentMarksByPhone = createAsyncThunk(
   async ({ phone, classId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:5559/api/exams/marks-by-phone`,
+        `https://falahiyya-kalarundi-backend.onrender.com/api/exams/marks-by-phone`,
         { phone, classId }
       );
       return response.data;

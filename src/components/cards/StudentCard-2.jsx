@@ -127,8 +127,6 @@
 //   );
 // };
 
-
-
 // import React from "react";
 // import styled from "styled-components";
 
@@ -263,8 +261,6 @@
 //   );
 // };
 
-
-
 import React from "react";
 import PropTypes from "prop-types";
 import { Trophy, Medal, Award } from "lucide-react";
@@ -308,7 +304,9 @@ export const StudentCard_2 = ({ student }) => {
   };
 
   const styles = getRankStyles();
-  const percentage = Math.round((student.totalObtained / student.totalMarks) * 100);
+  const percentage = Math.round(
+    (student.totalObtained / student.totalMarks) * 100
+  );
 
   return (
     <div
@@ -344,11 +342,9 @@ export const StudentCard_2 = ({ student }) => {
       <div className="bg-white p-5">
         <div className="flex flex-col md:flex-row gap-5 items-center">
           {student.image ? (
-            <div
-              className={`relative flex-shrink-0 ${student.rank <= 3 ? "animate-pulse" : ""}`}
-            >
+            <div className={`relative flex-shrink-0`}>
               <div
-                className={`absolute inset-0 rounded-full ${styles.borderColor} border-4 opacity-50 ${student.rank <= 3 ? "animate-ping" : ""}`}
+                className={`absolute inset-0 rounded-full ${styles.borderColor} border-4 opacity-50 `}
               ></div>
               <img
                 src={student.image}
@@ -371,9 +367,6 @@ export const StudentCard_2 = ({ student }) => {
             <p className="text-gray-600 mt-1">
               <span className="font-medium">Guardian:</span> {student.guardian}
             </p>
-            {/* <p className="text-gray-600 mt-1">
-              <span className="font-medium">Place:</span> {student.place}
-            </p> */}
 
             <div className="mt-3">
               <div className="flex items-center gap-2">
@@ -383,7 +376,9 @@ export const StudentCard_2 = ({ student }) => {
                     style={{ width: `${percentage}%` }}
                   ></div>
                 </div>
-                <span className="text-sm font-medium text-gray-700">{percentage}%</span>
+                <span className="text-sm font-medium text-gray-700">
+                  {percentage}%
+                </span>
               </div>
             </div>
           </div>

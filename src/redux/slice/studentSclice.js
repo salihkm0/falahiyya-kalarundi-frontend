@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/students"; // Update this with your backend URL
+const API_URL = "https://falahiyya-kalarundi-backend.onrender.com/api/students"; // Update this with your backend URL
 
 // Async actions
 export const addStudent = createAsyncThunk("students/addStudent", async (studentData, { rejectWithValue }) => {

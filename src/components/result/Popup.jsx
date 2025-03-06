@@ -44,7 +44,7 @@ export const MarkPopupForm = () => {
   const loadClasses = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5559/api/class/`);
+      const res = await axios.get(`https://falahiyya-kalarundi-backend.onrender.com/api/class/`);
       setClasses(res?.data);
       setLoading(false);
     } catch (error) {
@@ -71,7 +71,7 @@ export const MarkPopupForm = () => {
       }
 
       const res = await axios.post(
-        `http://localhost:5559/api/exams/marks-by-phone`,
+        `https://falahiyya-kalarundi-backend.onrender.com/api/exams/marks-by-phone`,
         {
           phone: data.phone,
           classId: data.class,

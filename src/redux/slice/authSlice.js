@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:5559/api/auth"; 
+const API_URL = "https://falahiyya-kalarundi-backend.onrender.com/api/auth"; 
 
 // Register user
 export const registerUser = createAsyncThunk(

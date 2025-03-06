@@ -1,24 +1,16 @@
 import React, { useRef } from "react";
-import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 export const StudentResultCard = ({ student, isFailed }) => {
   const pdfRef = useRef();
 
-  const convertImageToBase64 = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  };
-  const handleDownloadPdf = async () => {
+  const handleDownloadImage = async () => {
     const element = pdfRef.current;
 
-    const scale = 3;
+    // Set a higher scale for better rendering on mobile
+    const scale = window.innerWidth < 768 ? 4 : 3;
+
     const canvas = await html2canvas(element, {
       scale: scale,
       useCORS: true,
@@ -27,34 +19,40 @@ export const StudentResultCard = ({ student, isFailed }) => {
     });
 
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
 
-    const imgWidth = 210 - 20;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-
-    pdf.save(`${student?.name}_Result.pdf`);
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = `${student?.name}_Result.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
+
   console.log("Student :", student.marks);
 
   return (
     <>
       <div
-        className="max-w-[500px] sm:w-[600px] md:min-w-[700px] lg:min-w-[800px] mx-auto p-4 bg-white shadow-lg rounded-lg border border-gray-200"
+        className="max-w-[500px] sm:w-[600px] md:min-w-[700px] lg:min-w-[800px] mx-auto md:p-6 bg-white rounded-xl shadow-2xl transform transition-all"
         ref={pdfRef}
       >
-        <div className="bg-blue-600 text-white flex justify-center items-center flex-col py-3 rounded-t-lg">
-          <h2 className="text-lg font-bold">AL MADRASSATHUL FALAHIYYA</h2>
-          <p>Kalarundi ,Valiyaparamba P.O , SKIMV Board: Reg No: 10610</p>
-          <p className="text-sm">Public Examination Result</p>
+        {/* Header Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center items-center flex-col px-1 py-2 md:py-4 rounded-t-xl">
+          <h2 className="text-2xl font-bold text-center">AL MADRASSATHUL FALAHIYYA</h2>
+          <p className="text-sm text-center mt-1 text-center">
+            Kalarundi, Valiyaparamba P.O, SKIMV Board: Reg No: 10610
+          </p>
+          <p className="text-xs mt-1">Annual Examination Result</p>
         </div>
-        <div className="p-4 border-b">
-          <h3 className="text-center text-lg font-semibold">
+
+        {/* Student Details Section */}
+        <div className="p-6 border-b border-gray-200">
+          <h3 className="text-center text-xl font-semibold text-gray-800">
             Examination Result 2024-25
           </h3>
-          <div className="grid grid-cols-2">
-            <div className="grid grid-cols-1 gap-4 mt-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+            <div className="space-y-4 text-sm text-gray-700">
               <p>
                 <strong>Student's Name:</strong> {student.name}
               </p>
@@ -68,31 +66,34 @@ export const StudentResultCard = ({ student, isFailed }) => {
                 <strong>Father's Name:</strong> {student.guardian}
               </p>
             </div>
-            {/* {student?.image && ( */}
-            <div className="flex w-full justify-end items-center">
-              {student.image ? (
+            {student.image && (
+              <div className="flex justify-end items-center">
                 <StudentImage src={student.image} alt="Student" />
-              ) : (
-                ""
-              )}
-            </div>
-            {/* )} */}
+              </div>
+            )}
           </div>
         </div>
-        <div className="p-4">
-          <h3 className="text-lg font-semibold">Mark List</h3>
-          <table className="w-full mt-2 border border-gray-300">
+
+        {/* Marks Section */}
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-gray-800">Mark List</h3>
+          <table className="w-full mt-4 border-collapse">
             <tbody>
               {student?.marks.map((sub) => (
-                <tr className="border-b bg-gray-100" key={sub.name}>
-                  <td className="p-2">{sub.name}</td>
-                  <td className="p-2 text-right">{sub.obtained}</td>
+                <tr
+                  className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                  key={sub.name}
+                >
+                  <td className="p-3 text-sm text-gray-700">{sub.name}</td>
+                  <td className="p-3 text-sm text-gray-700 text-right">
+                    {sub.obtained}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="flex justify-between items-center mt-6 mb-2">
-            <div className="text-lg font-bold ">
+          <div className="flex justify-between items-center mt-8 mb-4">
+            <div className="text-lg font-bold text-gray-800">
               Rank:{" "}
               <span
                 className={`${
@@ -102,24 +103,38 @@ export const StudentResultCard = ({ student, isFailed }) => {
                 {student.rank}
               </span>
             </div>
-            <div className="text-lg font-bold">
+            <div className="text-lg font-bold text-gray-800">
               Total: {student.totalObtained} / {student.totalMarks}
             </div>
           </div>
         </div>
-        <div className="bg-blue-600 text-white flex justify-center items-center py-2 rounded-b-lg text-sm">
+
+        {/* Footer Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center items-center py-3 rounded-b-xl text-sm">
           All Rights © Reserved for Falahiyyakalarundi
         </div>
       </div>
-      <div className="bg-white p-4 text-center text-sm">
+
+      {/* Download Button */}
+      <div className="md:bg-white p-6 text-center">
         <button
-          className="bg-blue-600 hover:bg-blue-800 text-white px-3 py-1 rounded flex items-center justify-center gap-2 mx-auto"
-          onClick={handleDownloadPdf}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2 mx-auto transition-all transform hover:scale-105"
+          onClick={handleDownloadImage}
         >
           <DownloadForOfflineIcon />
-          Download PDF
+          Download Image
         </button>
       </div>
     </>
+  );
+};
+
+const StudentImage = ({ src, alt }) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
+    />
   );
 };

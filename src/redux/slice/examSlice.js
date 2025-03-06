@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:5559/api";
+const API_URL = "https://falahiyya-kalarundi-backend.onrender.com/api";
 
 // Fetch all exams
 export const fetchExams = createAsyncThunk("exams/fetchExams", async () => {

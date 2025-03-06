@@ -87,16 +87,20 @@ export const Result = () => {
   const isFailed = studentData.rank === "Failed";
 
   return (
-    <>
-      <div className="min-h-screen flex flex-col items-center">
-        <h1 className="text-3xl font-bold text-gray-800 text-center">
-          AL Madrassathul Falahiyya Kalarundi
-        </h1>
-        <p className="text-lg text-gray-600">Exam Result Board</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl text-center font-bold text-gray-900 mb-2">
+            AL Madrassathul Falahiyya Kalarundi
+          </h1>
+          <p className="text-lg text-gray-600">Exam Result Board</p>
+        </div>
 
-        <div className="bg-white shadow-lg rounded-xl p-6 mt-6 text-center w-full max-w-md">
+        {/* Result Summary Card */}
+        <div className="bg-white rounded-xl shadow-2xl p-6 mb-10 transform transition-all">
           <p
-            className={`text-xl font-semibold ${
+            className={`text-2xl font-semibold text-center ${
               isFailed ? "text-red-600" : "text-green-600"
             }`}
           >
@@ -104,33 +108,42 @@ export const Result = () => {
               ? `Sorry, ${studentData.name}. You have failed the exam. Better luck next time!`
               : `Congratulations, ${studentData.name}! You Passed The Exam`}
           </p>
-          <div className="text-4xl font-bold text-gray-800 my-4">
-            {studentData.totalObtained}/{studentData.totalMarks}
+          <div className="flex justify-center items-center my-6">
+            <div className="text-6xl font-bold text-gray-900">
+              {studentData.totalObtained}
+              <span className="text-3xl text-gray-500">/{studentData.totalMarks}</span>
+            </div>
           </div>
-          <p className="text-lg text-gray-700 font-semibold">
-            Percentage: {studentData.percentage}%
-          </p>
-          <p className="text-lg text-gray-700 font-semibold">
-            Rank:{" "}
-            <span
-              className={`${
-                isFailed ? "text-red-600" : "text-blue-600"
-              } font-bold`}
-            >
-              {studentData.rank}
-            </span>
-          </p>
-          <p className="text-lg text-gray-700 font-semibold">
-            Class: <span className="text-blue-600">{studentData.class}</span>
-          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <p className="text-lg text-gray-700 font-semibold">Percentage</p>
+              <p className="text-2xl font-bold text-blue-600">
+                {studentData.percentage}%
+              </p>
+            </div>
+            <div className="bg-purple-50 p-4 rounded-lg">
+              <p className="text-lg text-gray-700 font-semibold">Rank</p>
+              <p
+                className={`text-2xl font-bold ${
+                  isFailed ? "text-red-600" : "text-purple-600"
+                }`}
+              >
+                {studentData.rank}
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <p className="text-lg text-gray-700 font-semibold">
+              Class: <span className="text-blue-600">{studentData.class}</span>
+            </p>
+          </div>
         </div>
 
-        <div className="mt-10 w-full">
-          <div className="grid grid-cols-1 gap-4 mt-4">
-            <StudentResultCard student={studentData} isFailed = {isFailed}/>
-          </div>
+        {/* Student Result Card */}
+        <div className="bg-white rounded-xl shadow-2xl md:p-6">
+          <StudentResultCard student={studentData} isFailed={isFailed} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

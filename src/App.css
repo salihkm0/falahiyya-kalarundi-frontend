@@ -3,3 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+
+.pdf-generation {
+  width: 1200px !important; /* Ensure the width is fixed */
+  /* Add any other styles you need for PDF generation */
+}

@@ -5,6 +5,8 @@ import { StudentLayout } from "../layout/StudentLayout";
 import { HomePage } from "../pages/HomePage";
 import { ResultPage } from "../pages/ResultPage";
 import { LoadingPage } from "../pages/LoadingPage";
+import { ResultHome } from "../components/result/ResutlHome";
+import { AttendancePage } from "../pages/AttendancePage";
 
 export const router = createBrowserRouter([
   {
@@ -17,11 +19,15 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <LoadingPage />,
+    element: <HomePage />,
   },
   {
     element: <StudentLayout />,
     children: [
+      {
+        path: "/result",
+        element: <ResultHome />,
+      },
       {
         path: "/result/:studId",
         element: <ResultPage />,
@@ -30,6 +36,14 @@ export const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
+      {
+        path: "/attendance",
+        element: <AttendancePage />,
+      },
+      // {
+      //   path: "/home",
+      //   element: <HomePage />,
+      // },
     ],
   },
 ]);

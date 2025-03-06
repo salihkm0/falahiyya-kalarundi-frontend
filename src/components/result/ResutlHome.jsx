@@ -7,17 +7,14 @@ export const ResultHome = () => {
   const { exams } = useSelector((state) => state.exam);
   const { classes } = useSelector((state) => state.class);
   const [topStudents, setTopStudents] = useState({});
-
   useEffect(() => {
     const getClassTopStudents = () => {
       const studentsByClass = {};
-
       exams.forEach((exam) => {
         const classId = exam.studentId.classNumber;
         if (!studentsByClass[classId]) {
           studentsByClass[classId] = {};
         }
-
         if (!studentsByClass[classId][exam.studentId._id]) {
           studentsByClass[classId][exam.studentId._id] = {
             student: { ...exam.studentId },
@@ -25,36 +22,41 @@ export const ResultHome = () => {
             totalMarks: 0,
           };
         }
-
         studentsByClass[classId][exam.studentId._id].totalObtained +=
           exam.marks.obtainedMark;
         studentsByClass[classId][exam.studentId._id].totalMarks +=
           exam.marks.totalMark;
       });
-
       const topStudentsByClass = {};
       Object.keys(studentsByClass).forEach((classId) => {
         const students = Object.values(studentsByClass[classId]);
         students.sort((a, b) => b.totalObtained - a.totalObtained);
-
-        const rankedStudents = students.slice(0, 3).map((student, index) => ({
-          ...student.student,
-          rank: index + 1,
-          totalObtained: student.totalObtained,
-          totalMarks: student.totalMarks,
-        }));
-
-        topStudentsByClass[classId] = rankedStudents;
+        let currentRank = 1;
+        let previousMark = null;
+        let actualRank = 1;
+        const rankedStudents = students.map((student, index) => {
+          if (previousMark !== null && student.totalObtained !== previousMark) {
+            currentRank = actualRank;
+          }
+          previousMark = student.totalObtained;
+          actualRank++;
+          return {
+            ...student.student,
+            rank: currentRank,
+            totalObtained: student.totalObtained,
+            totalMarks: student.totalMarks,
+          };
+        });
+        // **Take only the top 3 students**
+        topStudentsByClass[classId] = rankedStudents.slice(0, 3);
       });
-
       setTopStudents(topStudentsByClass);
     };
-
     if (exams.length > 0) {
       getClassTopStudents();
     }
   }, [exams]);
-
+  console.log("top students : ", topStudents);
   // Filter out "5A" and sort remaining classes numerically
   const sortedClasses = classes
     .filter((cls) => cls.classNumber !== "5 A")
@@ -63,7 +65,6 @@ export const ResultHome = () => {
       const numB = parseInt(b.classNumber);
       return numA - numB;
     });
-
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6">
       <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center">
@@ -72,11 +73,9 @@ export const ResultHome = () => {
       <p className="text-sm sm:text-lg text-gray-600 text-center">
         Exam Result Board
       </p>
-
       <div className="mt-6">
         <MarkPopupForm />
       </div>
-
       <div className="mt-10 w-full">
         <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
           Class Toppers
