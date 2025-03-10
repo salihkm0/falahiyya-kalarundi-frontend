@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchStudentMarksByPhone } from "../../redux/slice/examSlice"; // Adjust path if needed
+import { useDispatch } from "react-redux";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
-  Button,
   MenuItem,
   Select,
   InputLabel,
   FormControl,
   Typography,
-  CircularProgress,
+  Box,
 } from "@mui/material";
-import { fetchClasses } from "../../redux/slice/classSlice";
+import { Search, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -39,12 +37,12 @@ export const MarkPopupForm = ({ exams }) => {
       const res = await axios.get(
         `https://falahiyya-kalarundi-backend.onrender.com/api/class/`
       );
-  
+
       // Filter out class "5 A" and sort the classes numerically
       const filteredAndSortedClasses = res.data
-        .filter(cls => cls.classNumber !== "5 A") // Remove "5 A"
+        .filter((cls) => cls.classNumber !== "5 A") // Remove "5 A"
         .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber)); // Sort numerically
-  
+
       setClasses(filteredAndSortedClasses);
       setLoading(false);
     } catch (error) {
@@ -52,7 +50,6 @@ export const MarkPopupForm = ({ exams }) => {
       setLoading(false);
     }
   };
-  
 
   const {
     register,
@@ -63,7 +60,6 @@ export const MarkPopupForm = ({ exams }) => {
 
   // Handle form submission
   const onSubmit = async (data) => {
-    // dispatch(fetchStudentMarksByPhone({ phone: data.phone, classId: data.class }));
     console.log("Form submission : " + JSON.stringify(data));
     setLoading(true);
     try {
@@ -95,19 +91,12 @@ export const MarkPopupForm = ({ exams }) => {
   return (
     <>
       {/* Button to Open Popup */}
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: "#4CAF50",
-          "&:hover": { backgroundColor: "#388E3C" },
-          padding: "10px 20px",
-          fontSize: "16px",
-          fontWeight: "bold",
-        }}
+      <button
         onClick={() => setOpen(true)}
+        className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:scale-105 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 flex items-center gap-2"
       >
-        View Your Mark
-      </Button>
+        <Search size={20} /> View Your Mark
+      </button>
 
       {/* Popup Form */}
       <Dialog
@@ -115,24 +104,43 @@ export const MarkPopupForm = ({ exams }) => {
         onClose={() => setOpen(false)}
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "12px",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+          },
+        }}
       >
         <DialogTitle
-          sx={{ textAlign: "center", fontSize: "22px", fontWeight: "bold" }}
+          sx={{
+            textAlign: "center",
+            fontSize: "24px",
+            fontWeight: "bold",
+            color: "#333",
+            padding: "24px",
+            backgroundColor: "#f5f5f5",
+            borderBottom: "1px solid #e0e0e0",
+          }}
         >
           📖 Search for Your Exam Marks
         </DialogTitle>
-        <DialogContent sx={{ padding: "20px" }}>
-          <Typography variant="body1" textAlign="center" color="textSecondary">
+        <DialogContent sx={{ padding: "24px" }}>
+          <Typography
+            variant="body1"
+            textAlign="center"
+            color="textSecondary"
+            sx={{ mb: 3 }}
+          >
             Enter your details below to check your exam results.
           </Typography>
 
-          <form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: "20px" }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             {/* Phone Number Input */}
             <TextField
               fullWidth
               label="Phone Number"
               variant="outlined"
-              margin="dense"
+              margin="normal"
               {...register("phone", {
                 required: "Phone number is required",
                 pattern: {
@@ -142,12 +150,27 @@ export const MarkPopupForm = ({ exams }) => {
               })}
               error={!!errors.phone}
               helperText={errors.phone?.message}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#e0e0e0",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#007BFF",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#007BFF",
+                  borderWidth: "2px",
+                },
+              }}
             />
 
             {/* Class Selection Dropdown */}
             <FormControl
               fullWidth
-              margin="dense"
+              margin="normal"
               variant="outlined"
               sx={{ minWidth: 120 }}
             >
@@ -157,15 +180,16 @@ export const MarkPopupForm = ({ exams }) => {
                 defaultValue=""
                 onChange={(e) => setValue("class", e.target.value)}
                 sx={{
+                  borderRadius: "8px",
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "rgba(0, 0, 0, 0.23)", // Default border color
+                    borderColor: "#e0e0e0",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#007BFF", // Hover effect
+                    borderColor: "#007BFF",
                   },
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#007BFF", // Focus effect
-                    borderWidth: "2px", // Emphasize focus
+                    borderColor: "#007BFF",
+                    borderWidth: "2px",
                   },
                 }}
               >
@@ -179,43 +203,40 @@ export const MarkPopupForm = ({ exams }) => {
 
             {/* Error Message for Class */}
             {errors.class && (
-              <Typography color="error" variant="body2">
+              <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {errors.class.message}
               </Typography>
             )}
 
             {/* Buttons */}
-            <DialogActions sx={{ justifyContent: "center", marginTop: "15px" }}>
-              <Button
+            <DialogActions
+              sx={{
+                justifyContent: "center",
+                marginTop: "24px",
+                padding: "16px",
+              }}
+            >
+              <button
                 onClick={() => setOpen(false)}
-                color="secondary"
-                variant="outlined"
-                sx={{ padding: "10px 20px", fontWeight: "bold" }}
+                className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:scale-105 transition duration-200 flex items-center gap-2 shadow-lg"
               >
-                Cancel
-              </Button>
-              <Button
+                <X size={20} /> Cancel
+              </button>
+              <button
                 type="submit"
-                variant="contained"
-                sx={{
-                  backgroundColor: "#007BFF",
-                  "&:hover": { backgroundColor: "#0056b3" },
-                  padding: "10px 20px",
-                  fontWeight: "bold",
-                }}
-                disabled={exams.length === 0}
+                disabled={loading || exams.length === 0}
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:scale-105 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
               >
-                Submit
-              </Button>
+                {loading ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" /> Processing...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </button>
             </DialogActions>
           </form>
-
-          {/* Display Loading */}
-          {loading && (
-            <Typography textAlign="center" sx={{ mt: 2 }}>
-              <CircularProgress size={24} />
-            </Typography>
-          )}
         </DialogContent>
       </Dialog>
     </>
