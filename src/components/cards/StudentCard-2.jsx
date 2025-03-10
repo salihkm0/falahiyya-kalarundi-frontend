@@ -263,10 +263,22 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Trophy, Medal, Award } from "lucide-react";
+import { Trophy, Medal, Award, XCircle } from "lucide-react";
 
 export const StudentCard_2 = ({ student }) => {
+  console.log(student)
   const getRankStyles = () => {
+    if (student.rank === "Failed") {
+      return {
+        bgGradient: "bg-gradient-to-r from-red-500 to-red-700",
+        borderColor: "border-red-600",
+        icon: <XCircle className="h-8 w-8 text-red-100" />,
+        shadowColor: "shadow-red-300",
+        badgeColor: "bg-red-800",
+        message: "Better Luck Next Time 💪",
+      };
+    }
+
     switch (student.rank) {
       case 1:
         return {
@@ -275,6 +287,7 @@ export const StudentCard_2 = ({ student }) => {
           icon: <Trophy className="h-8 w-8 text-yellow-100" />,
           shadowColor: "shadow-yellow-200",
           badgeColor: "bg-yellow-600",
+          message: "🎉 Outstanding Achievement! 🎉",
         };
       case 2:
         return {
@@ -283,6 +296,7 @@ export const StudentCard_2 = ({ student }) => {
           icon: <Medal className="h-8 w-8 text-slate-100" />,
           shadowColor: "shadow-slate-200",
           badgeColor: "bg-slate-600",
+          message: "🎉 Well Done 🎉",
         };
       case 3:
         return {
@@ -291,6 +305,7 @@ export const StudentCard_2 = ({ student }) => {
           icon: <Award className="h-8 w-8 text-amber-100" />,
           shadowColor: "shadow-amber-200",
           badgeColor: "bg-amber-900",
+          message: "🎉 Great Effort 🎉",
         };
       default:
         return {
@@ -299,6 +314,7 @@ export const StudentCard_2 = ({ student }) => {
           icon: null,
           shadowColor: "shadow-blue-200",
           badgeColor: "bg-blue-600",
+          message: "🎉 Congratulations 🎉",
         };
     }
   };
@@ -319,7 +335,7 @@ export const StudentCard_2 = ({ student }) => {
             <span
               className={`${styles.badgeColor} text-white text-sm font-bold px-3 py-1 rounded-full`}
             >
-              Rank #{student.rank}
+              {student.rank === "failed" ? "Failed" : `Rank #${student.rank}`}
             </span>
           </div>
           <div className="text-right">
@@ -330,10 +346,10 @@ export const StudentCard_2 = ({ student }) => {
           </div>
         </div>
 
-        {student.rank <= 3 && (
+        {styles.message && (
           <div className="mt-3 text-center">
             <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-medium">
-              🎉 Congratulations 🎉
+              {styles.message}
             </div>
           </div>
         )}
@@ -390,7 +406,7 @@ export const StudentCard_2 = ({ student }) => {
 
 StudentCard_2.propTypes = {
   student: PropTypes.shape({
-    rank: PropTypes.number.isRequired,
+    rank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     totalObtained: PropTypes.number.isRequired,
     totalMarks: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
