@@ -29,14 +29,6 @@ export const MarkPopupForm = ({ exams }) => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetching data from Redux store
-  //   const { studentMarks, loading: examLoading, error: examError } = useSelector((state) => state.exams);
-  //   const { classes, loading: classLoading, error: classError } = useSelector((state) => state.class);
-
-  //   useEffect(() => {
-  //     dispatch(fetchClasses());
-  //   }, [dispatch]);
-
   useEffect(() => {
     loadClasses();
   }, []);
@@ -47,13 +39,20 @@ export const MarkPopupForm = ({ exams }) => {
       const res = await axios.get(
         `https://falahiyya-kalarundi-backend.onrender.com/api/class/`
       );
-      setClasses(res?.data);
+  
+      // Filter out class "5 A" and sort the classes numerically
+      const filteredAndSortedClasses = res.data
+        .filter(cls => cls.classNumber !== "5 A") // Remove "5 A"
+        .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber)); // Sort numerically
+  
+      setClasses(filteredAndSortedClasses);
       setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
     }
   };
+  
 
   const {
     register,
