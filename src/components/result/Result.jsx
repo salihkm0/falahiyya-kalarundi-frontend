@@ -52,10 +52,10 @@ export const Result = () => {
         (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 40
       );
       const allAbove30 = res.exams.every(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 18
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 >= 35
       );
       const anyBelow30 = res.exams.some(
-        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 < 18
+        (exam) => (exam.marks.obtainedMark / exam.marks.totalMark) * 100 < 35
       );
 
       if (allAbove97) rank = "Top Plus";
@@ -87,12 +87,12 @@ export const Result = () => {
   const isFailed = studentData.rank === "Failed";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8 pt-10">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-10 border ">
           <h1 className="text-4xl text-center font-bold text-gray-900 mb-2">
-            AL Madrassathul Falahiyya Kalarundi
+            AL Madrassathul Falahiyya Kalarundi 
           </h1>
           <p className="text-lg text-gray-600">Exam Result Board</p>
         </div>
@@ -111,7 +111,9 @@ export const Result = () => {
           <div className="flex justify-center items-center my-6">
             <div className="text-6xl font-bold text-gray-900">
               {studentData.totalObtained}
-              <span className="text-3xl text-gray-500">/{studentData.totalMarks}</span>
+              <span className="text-3xl text-gray-500">
+                /{studentData.totalMarks}
+              </span>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
@@ -140,7 +142,7 @@ export const Result = () => {
         </div>
 
         {/* Student Result Card */}
-        <div className="bg-white rounded-xl shadow-2xl md:p-6">
+        <div className="md:bg-white rounded-xl shadow-2xl md:p-6">
           <StudentResultCard student={studentData} isFailed={isFailed} />
         </div>
       </div>

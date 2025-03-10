@@ -110,13 +110,13 @@ export const StudentResultCard = ({ student, isFailed }) => {
         </div>
 
         {/* Footer Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center items-center py-3 rounded-b-xl text-sm">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center shadow-xl items-center py-3 md:rounded-b-xl text-sm">
           All Rights © Reserved for Falahiyyakalarundi
         </div>
       </div>
 
       {/* Download Button */}
-      <div className="md:bg-white p-6 text-center">
+      <div className="md:bg-white p-6 text-center mt-10">
         <button
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2 mx-auto transition-all transform hover:scale-105"
           onClick={handleDownloadImage}

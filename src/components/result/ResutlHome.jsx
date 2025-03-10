@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StudentCard_2 } from "../cards/StudentCard-2";
 import { MarkPopupForm } from "./Popup";
+import ExamResultBoard from "../cards/ExamResultBoard";
 
 export const ResultHome = () => {
   const { exams } = useSelector((state) => state.exam);
@@ -66,16 +67,21 @@ export const ResultHome = () => {
       return numA - numB;
     });
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6">
-      <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center">
-        Welcome to AL Madrassathul Falahiyya Kalarundi
-      </h1>
-      <p className="text-sm sm:text-lg text-gray-600 text-center">
-        Exam Result Board
-      </p>
-      <div className="mt-6">
-        <MarkPopupForm />
+    <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6 ">
+      <div className="mt-10 p-5 border shodow-md flex flex-col items-center bg-white rounded-md w-full">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center">
+          Welcome to AL Madrassathul Falahiyya Kalarundi
+        </h1>
+        <p className="text-sm sm:text-lg text-gray-600 text-center">
+          Exam Result Board
+        </p>
+        <div className="mt-6">
+          <MarkPopupForm />
+        </div>
       </div>
+
+      {/* <ExamResultBoard/> */}
+
       <div className="mt-10 w-full">
         <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
           Class Toppers
