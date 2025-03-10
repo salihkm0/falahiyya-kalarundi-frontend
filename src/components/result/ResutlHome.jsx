@@ -102,14 +102,24 @@ export const ResultHome = () => {
           Exam Result Board
         </p>
         <div className="mt-6">
-          <MarkPopupForm />
+          <MarkPopupForm exams = {exams}/>
         </div>
       </div>
+      {!exams ||
+        exams.length === 0 && (
+          <div className="container min-h-[50vh] flex justify-center items-center">
+            <h1 className="text-center">Please Wait...</h1>
+          </div>
+        )}
 
       <div className="mt-10 w-full">
-        <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
-          Class Toppers
-        </h2>
+        {!exams ||
+          exams.length !== 0 && (
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
+              Class Toppers
+            </h2>
+          )}
+
         {sortedClasses.map((cls) => (
           <div key={cls._id} className="mt-6">
             <h3 className="text-base sm:text-xl font-semibold text-gray-700">

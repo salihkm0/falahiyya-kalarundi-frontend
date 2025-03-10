@@ -22,7 +22,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { setStudentMarks } from "../../redux/slice/markSlice";
 
-export const MarkPopupForm = () => {
+export const MarkPopupForm = ({ exams }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,7 +44,9 @@ export const MarkPopupForm = () => {
   const loadClasses = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`https://falahiyya-kalarundi-backend.onrender.com/api/class/`);
+      const res = await axios.get(
+        `https://falahiyya-kalarundi-backend.onrender.com/api/class/`
+      );
       setClasses(res?.data);
       setLoading(false);
     } catch (error) {
@@ -64,9 +66,11 @@ export const MarkPopupForm = () => {
   const onSubmit = async (data) => {
     // dispatch(fetchStudentMarksByPhone({ phone: data.phone, classId: data.class }));
     console.log("Form submission : " + JSON.stringify(data));
+    setLoading(true);
     try {
       if (!data.phone || !data.class) {
         toast.error("Please fill all fields");
+        setLoading(false);
         return;
       }
 
@@ -77,18 +81,17 @@ export const MarkPopupForm = () => {
           classId: data.class,
         }
       );
-
-      console.log("success : ", res.data)
+      setLoading(false);
+      console.log("success : ", res.data);
 
       dispatch(setStudentMarks(res.data));
       navigate(`/result/${res.data.student._id}`);
     } catch (error) {
       toast.error(error?.response?.data?.message);
       console.log(error?.response?.data?.message);
+      setLoading(false);
     }
   };
-
-  
 
   return (
     <>
@@ -201,6 +204,7 @@ export const MarkPopupForm = () => {
                   padding: "10px 20px",
                   fontWeight: "bold",
                 }}
+                disabled={exams.length === 0}
               >
                 Submit
               </Button>
