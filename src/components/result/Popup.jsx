@@ -12,7 +12,6 @@ import {
   InputLabel,
   FormControl,
   Typography,
-  Box,
 } from "@mui/material";
 import { Search, X, Loader2 } from "lucide-react";
 import axios from "axios";
@@ -20,12 +19,13 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { setStudentMarks } from "../../redux/slice/markSlice";
 
-export const MarkPopupForm = ({ exams }) => {
+export const MarkPopupForm = ({ exams = [] }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [classLoading, setClassLoading] = useState(false);
 
   useEffect(() => {
     loadClasses();
@@ -33,21 +33,21 @@ export const MarkPopupForm = ({ exams }) => {
 
   const loadClasses = async () => {
     try {
-      setLoading(true);
+      setClassLoading(true);
       const res = await axios.get(
         `https://falahiyya-kalarundi-backend.onrender.com/api/class/`
       );
 
-      // Filter out class "5 A" and sort the classes numerically
+      // Filter out "5 A" and sort classes numerically
       const filteredAndSortedClasses = res.data
-        .filter((cls) => cls.classNumber !== "5 A") // Remove "5 A"
-        .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber)); // Sort numerically
+        .filter((cls) => cls.classNumber !== "5 A")
+        .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber));
 
       setClasses(filteredAndSortedClasses);
-      setLoading(false);
     } catch (error) {
-      console.error(error);
-      setLoading(false);
+      console.error("Error loading classes:", error);
+    } finally {
+      setClassLoading(false);
     }
   };
 
@@ -58,14 +58,13 @@ export const MarkPopupForm = ({ exams }) => {
     formState: { errors },
   } = useForm();
 
-  // Handle form submission
   const onSubmit = async (data) => {
-    console.log("Form submission : " + JSON.stringify(data));
+    console.log("Form submission:", JSON.stringify(data));
     setLoading(true);
+
     try {
       if (!data.phone || !data.class) {
         toast.error("Please fill all fields");
-        setLoading(false);
         return;
       }
 
@@ -76,14 +75,13 @@ export const MarkPopupForm = ({ exams }) => {
           classId: data.class,
         }
       );
-      setLoading(false);
-      console.log("success : ", res.data);
 
       dispatch(setStudentMarks(res.data));
       navigate(`/result/${res.data.student._id}`);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
-      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "An error occurred");
+      console.error(error?.response?.data?.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -111,6 +109,7 @@ export const MarkPopupForm = ({ exams }) => {
           },
         }}
       >
+        {/* Header */}
         <DialogTitle
           sx={{
             textAlign: "center",
@@ -124,63 +123,43 @@ export const MarkPopupForm = ({ exams }) => {
         >
           📖 Search for Your Exam Marks
         </DialogTitle>
-        <DialogContent sx={{ padding: "24px" }}>
-          <Typography
-            variant="body1"
-            textAlign="center"
-            color="textSecondary"
-            sx={{ mb: 3 }}
-          >
-            Enter your details below to check your exam results.
-          </Typography>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Phone Number Input */}
-            <TextField
-              fullWidth
-              label="Phone Number"
-              variant="outlined"
-              margin="normal"
-              {...register("phone", {
-                required: "Phone number is required",
-                pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: "Enter a valid 10-digit phone number",
-                },
-              })}
-              error={!!errors.phone}
-              helperText={errors.phone?.message}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#e0e0e0",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#007BFF",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#007BFF",
-                  borderWidth: "2px",
-                },
-              }}
-            />
-
-            {/* Class Selection Dropdown */}
-            <FormControl
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              sx={{ minWidth: 120 }}
+        {/* Loading State */}
+        {classLoading ? (
+          <div className="w-full flex items-center justify-center my-10">
+            <Loader2 size={40} className="animate-spin text-gray-500" />
+          </div>
+        ) : (
+          <DialogContent sx={{ padding: "24px" }}>
+            <Typography
+              variant="body1"
+              textAlign="center"
+              color="textSecondary"
+              sx={{ mb: 3 }}
             >
-              <InputLabel>Select Your Class</InputLabel>
-              <Select
-                {...register("class", { required: "Class is required" })}
-                defaultValue=""
-                onChange={(e) => setValue("class", e.target.value)}
+              Enter your details below to check your exam results.
+            </Typography>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* Phone Number Input */}
+              <TextField
+                fullWidth
+                label="Phone Number"
+                variant="outlined"
+                margin="normal"
+                {...register("phone", {
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: "Enter a valid 10-digit phone number",
+                  },
+                })}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
                 sx={{
-                  borderRadius: "8px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                  },
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: "#e0e0e0",
                   },
@@ -192,52 +171,84 @@ export const MarkPopupForm = ({ exams }) => {
                     borderWidth: "2px",
                   },
                 }}
-              >
-                {classes?.map((cls) => (
-                  <MenuItem key={cls._id} value={cls._id}>
-                    {cls.classNumber}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+              />
 
-            {/* Error Message for Class */}
-            {errors.class && (
-              <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                {errors.class.message}
-              </Typography>
-            )}
+              {/* Class Selection Dropdown */}
+              <FormControl
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                sx={{ minWidth: 120 }}
+              >
+                <InputLabel>Select Your Class</InputLabel>
+                <Select
+                  {...register("class", { required: "Class is required" })}
+                  defaultValue=""
+                  onChange={(e) => setValue("class", e.target.value)}
+                  sx={{
+                    borderRadius: "8px",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#e0e0e0",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#007BFF",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#007BFF",
+                      borderWidth: "2px",
+                    },
+                  }}
+                >
+                  {classes.length > 0 ? (
+                    classes.map((cls) => (
+                      <MenuItem key={cls._id} value={cls._id}>
+                        {cls.classNumber}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No classes available</MenuItem>
+                  )}
+                </Select>
+              </FormControl>
 
-            {/* Buttons */}
-            <DialogActions
-              sx={{
-                justifyContent: "center",
-                marginTop: "24px",
-                padding: "16px",
-              }}
-            >
-              <button
-                onClick={() => setOpen(false)}
-                className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:scale-105 transition duration-200 flex items-center gap-2 shadow-lg"
+              {/* Error Message for Class */}
+              {errors.class && (
+                <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                  {errors.class.message}
+                </Typography>
+              )}
+
+              {/* Buttons */}
+              <DialogActions
+                sx={{
+                  justifyContent: "center",
+                  marginTop: "24px",
+                  padding: "16px",
+                }}
               >
-                <X size={20} /> Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading || exams.length === 0}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:scale-105 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" /> Processing...
-                  </>
-                ) : (
-                  "Submit"
-                )}
-              </button>
-            </DialogActions>
-          </form>
-        </DialogContent>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:scale-105 transition duration-200 flex items-center gap-2 shadow-lg"
+                >
+                  <X size={20} /> Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || classLoading || exams.length === 0}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:scale-105 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" /> Processing...
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        )}
       </Dialog>
     </>
   );
