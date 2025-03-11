@@ -116,7 +116,7 @@ export const StudentResultCard = ({ student, isFailed }) => {
       </div>
 
       {/* Download Button */}
-      <div className="md:bg-white p-6 text-center mt-10">
+      {/* <div className="md:bg-white p-6 text-center mt-10">
         <button
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2 mx-auto transition-all transform hover:scale-105"
           onClick={handleDownloadImage}
@@ -124,7 +124,7 @@ export const StudentResultCard = ({ student, isFailed }) => {
           <DownloadForOfflineIcon />
           Download Image
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

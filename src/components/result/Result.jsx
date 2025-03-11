@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { StudentResultCard } from "../cards/StudentCard-1";
 import { useSelector } from "react-redux";
+import { AttendanceCard } from "../cards/AttendancCard";
+import axios from "axios";
 
 export const Result = () => {
   const [studentData, setStudentData] = useState(null);
+  const [attendanceData, setAttendanceData] = useState(null);
+  const [classRank, setClassRank] = useState(null);
+
   const res = useSelector((state) => state.mark.studentMarks);
   const { classes } = useSelector((state) => state.class);
 
@@ -77,10 +82,83 @@ export const Result = () => {
         percentage: percentage.toFixed(2),
         rank,
         marks: marksData,
+        classId: studentClass ? studentClass._id : null,
+        studentId: res.student._id,
       };
+
       setStudentData(formattedData);
     }
   }, [res, classes]);
+
+  // Fetch attendance data
+  useEffect(() => {
+    const fetchAttendance = async () => {
+      if (studentData && studentData.classId) {
+        try {
+          const response = await axios.get(
+            `https://falahiyya-kalarundi-backend.onrender.com/api/attendance/class/${studentData.classId}`
+          );
+          const allAttendance = response.data;
+
+          // Find the student's attendance
+          const studentAttendance = allAttendance.find(
+            (att) => att.studentId._id === studentData.studentId
+          );
+
+          if (studentAttendance && studentAttendance.attendance.length > 0) {
+            const presentDays = studentAttendance.attendance[0].presentDays;
+            const totalDays = studentAttendance.attendance[0].totalDays;
+            const attendancePercentage = (
+              (presentDays / totalDays) *
+              100
+            ).toFixed(2);
+
+            // Rank students based on attendance
+            const rankedStudents = allAttendance
+              .map((att) => ({
+                studentId: att.studentId._id,
+                name: att.studentId.name,
+                percentage: (
+                  (att.attendance[0].presentDays /
+                    att.attendance[0].totalDays) *
+                  100
+                ).toFixed(2),
+              }))
+              .sort((a, b) => b.percentage - a.percentage);
+
+            // Assign ranks while handling ties
+            let rankMap = new Map();
+            let rank = 1;
+
+            rankedStudents.forEach((student, index) => {
+              if (
+                index > 0 &&
+                student.percentage !== rankedStudents[index - 1].percentage
+              ) {
+                rank = index + 1;
+              }
+              rankMap.set(student.studentId, rank);
+            });
+
+            // Find the student's rank
+            const studentRank = rankMap.get(studentData.studentId) || null;
+
+            setClassRank(studentRank);
+            setAttendanceData({
+              presentDays,
+              totalDays,
+              percentage: attendancePercentage,
+              rank: studentRank,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching attendance:", error);
+        }
+      }
+    };
+
+    fetchAttendance();
+  }, [studentData]);
 
   if (!studentData) return <p>Loading...</p>;
 
@@ -92,7 +170,7 @@ export const Result = () => {
         {/* Header */}
         <div className="text-center mb-10 border ">
           <h1 className="text-4xl text-center font-bold text-gray-900 mb-2">
-            AL Madrassathul Falahiyya Kalarundi 
+            AL Madrassathul Falahiyya Kalarundi
           </h1>
           <p className="text-lg text-gray-600">Exam Result Board</p>
         </div>
@@ -134,16 +212,12 @@ export const Result = () => {
               </p>
             </div>
           </div>
-          <div className="mt-6 text-center">
-            <p className="text-lg text-gray-700 font-semibold">
-              Class: <span className="text-blue-600">{studentData.class}</span>
-            </p>
-          </div>
         </div>
 
         {/* Student Result Card */}
-        <div className="md:bg-white rounded-xl shadow-2xl md:p-6">
-          <StudentResultCard student={studentData} isFailed={isFailed} />
+        <StudentResultCard student={studentData} isFailed={isFailed} />
+        <div className="mt-10">
+          <AttendanceCard attendance={attendanceData} />
         </div>
       </div>
     </div>
