@@ -326,7 +326,7 @@ export const StudentCard_2 = ({ student }) => {
 
   return (
     <div
-      className={`w-full max-w-md mx-auto rounded-xl overflow-hidden shadow-lg ${styles.shadowColor} transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
+      className={`w-full max-w-md mx-auto rounded-xl overflow-hidden shadow-lg ${styles.shadowColor} transition-all duration-300 md:hover:scale-[1.02] hover:shadow-xl`}
     >
       <div className={`${styles.bgGradient} p-4 text-white relative`}>
         <div className="flex justify-between items-center">
@@ -370,7 +370,7 @@ export const StudentCard_2 = ({ student }) => {
             </div>
           ) : (
             <div
-              className={`w-24 h-24 md:w-28 md:h-28 rounded-full bg-gray-200 flex items-center justify-center border-4 ${styles.borderColor}`}
+              className={`w-20 h-20 md:w-28 md:h-28 rounded-full bg-gray-200 flex items-center justify-center border-4 ${styles.borderColor}`}
             >
               <span className="text-gray-400 text-2xl font-bold">
                 {student.name.charAt(0)}

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Slider from "react-slick";
 import { StudentCard_2 } from "../cards/StudentCard-2";
 import { MarkPopupForm } from "./Popup";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export const ResultHome = () => {
   const { exams } = useSelector((state) => state.exam);
@@ -20,7 +23,6 @@ export const ResultHome = () => {
 
         const studentId = exam.studentId._id;
 
-        // Initialize student record
         if (!studentsByClass[classId][studentId]) {
           studentsByClass[classId][studentId] = {
             student: { ...exam.studentId },
@@ -33,12 +35,10 @@ export const ResultHome = () => {
         const obtainedMark = exam.marks.obtainedMark;
         const totalMark = exam.marks.totalMark;
 
-        // Check if the student has failed (less than 17.5 out of 50)
         if (totalMark === 50 && obtainedMark < 17.5) {
           studentsByClass[classId][studentId].failed = true;
         }
 
-        // Accumulate marks
         studentsByClass[classId][studentId].totalObtained += obtainedMark;
         studentsByClass[classId][studentId].totalMarks += totalMark;
       });
@@ -48,17 +48,14 @@ export const ResultHome = () => {
       Object.keys(studentsByClass).forEach((classId) => {
         const students = Object.values(studentsByClass[classId]);
 
-        // Filter only passed students
         const passedStudents = students.filter((student) => !student.failed);
 
-        // Sort passed students by total obtained marks (Descending order)
         passedStudents.sort((a, b) => b.totalObtained - a.totalObtained);
 
         let currentRank = 1;
         let previousMark = null;
         let actualRank = 1;
 
-        // Assign ranks to passed students
         const rankedPassedStudents = passedStudents.map((student) => {
           if (previousMark !== null && student.totalObtained !== previousMark) {
             currentRank = actualRank;
@@ -73,7 +70,6 @@ export const ResultHome = () => {
           };
         });
 
-        // Get only the top 3 students
         topStudentsByClass[classId] = rankedPassedStudents.slice(0, 3);
       });
 
@@ -85,12 +81,20 @@ export const ResultHome = () => {
     }
   }, [exams]);
 
-  console.log("top students:", topStudents);
-
-  // Filter out "5A" and sort remaining classes numerically
   const sortedClasses = classes
     .filter((cls) => cls.classNumber !== "5 A")
     .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber));
+
+    const sliderSettings = {
+      dots: true,
+      infinite: true,
+      speed: 200,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      autoplay: true, // Enable auto sliding
+      autoplaySpeed: 2000, // Adjust the speed (3000ms = 3 seconds)
+    };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6 ">
@@ -102,9 +106,10 @@ export const ResultHome = () => {
           Exam Result Board
         </p>
         <div className="mt-6">
-          <MarkPopupForm exams = {exams}/>
+          <MarkPopupForm exams={exams} />
         </div>
       </div>
+
       {!exams ||
         exams.length === 0 && (
           <div className="container min-h-[50vh] flex justify-center items-center">
@@ -115,20 +120,29 @@ export const ResultHome = () => {
       <div className="mt-10 w-full">
         {!exams ||
           exams.length !== 0 && (
-            <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
+            <h2 className="text-[24px] md:text-[30px] font-bold text-gray-800 text-center "> 
               Class Toppers
             </h2>
           )}
 
         {sortedClasses.map((cls) => (
-          <div key={cls._id} className="mt-6">
-            <h3 className="text-base sm:text-xl font-semibold text-gray-700">
+          <div key={cls._id} className="mt-6 pt-3 pb-8">
+            <h3 className="text-base text-[22px] md:text-[26px] font-semibold text-gray-700 text-center pb-2">
               Class - {cls.classNumber}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
               {topStudents[cls._id]?.map((student) => (
                 <StudentCard_2 key={student.rollNo} student={student} />
               ))}
+            </div>
+
+            {/* Slider for Mobile */}
+            <div className="sm:hidden mt-4">
+              <Slider {...sliderSettings}>
+                {topStudents[cls._id]?.map((student) => (
+                  <StudentCard_2 key={student.rollNo} student={student} />
+                ))}
+              </Slider>
             </div>
           </div>
         ))}
