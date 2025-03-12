@@ -235,7 +235,7 @@ export const Result = () => {
         </div>
 
         {/* Student Result Card */}
-        <div ref={resultRef} className="bg-white p-6 rounded-xl shadow-lg">
+        <div ref={resultRef} className="">
           <StudentResultCard
             student={studentData}
             isFailed={studentData.rank === "Failed"}
