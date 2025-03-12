@@ -177,7 +177,7 @@ export const Result = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8 pt-10 ">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 md:py-10 px-1 md:px-6 lg:px-8 md:pt-10 ">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-5 border bg-[#fff] bg-white rounded-xl shadow-2xl p-5">
