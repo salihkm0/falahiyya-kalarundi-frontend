@@ -1,46 +1,15 @@
 import React, { useRef } from "react";
-import html2canvas from "html2canvas";
-import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
-
 export const StudentResultCard = ({ student, isFailed }) => {
-  const pdfRef = useRef();
-
-  const handleDownloadImage = async () => {
-    const element = pdfRef.current;
-
-    // Set a higher scale for better rendering on mobile
-    const scale = window.innerWidth < 768 ? 4 : 3;
-
-    const canvas = await html2canvas(element, {
-      scale: scale,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    // Create a temporary link element
-    const link = document.createElement("a");
-    link.href = imgData;
-    link.download = `${student?.name}_Result.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   console.log("Student :", student.marks);
-
   return (
     <>
       <div
-        className="max-w-[500px] sm:w-[600px] md:min-w-[700px] lg:min-w-[800px] mx-auto md:p-6 bg-white rounded-xl shadow-2xl transform transition-all"
-        ref={pdfRef}
+        className="w-auto mx-auto md:p-6 bg-white rounded-xl shadow-2xl transform transition-all"
       >
         {/* Header Section */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center items-center flex-col px-1 py-2 md:py-4 rounded-t-xl">
-          <h2 className="text-2xl font-bold text-center">AL MADRASSATHUL FALAHIYYA</h2>
-          <p className="text-sm text-center mt-1 text-center">
+          <h2 className="text-lg md:text-3xl font-bold text-center">AL MADRASSATHUL FALAHIYYA</h2>
+          <p className=" text-[12px] md:text-md text-center mt-1 text-center">
             Kalarundi, Valiyaparamba P.O, SKIMV Board: Reg No: 10610
           </p>
           <p className="text-xs mt-1">Annual Examination Result</p>
@@ -75,7 +44,7 @@ export const StudentResultCard = ({ student, isFailed }) => {
         </div>
 
         {/* Marks Section */}
-        <div className="p-6">
+        <div className="p-4 md:p-6 ">
           <h3 className="text-xl font-semibold text-gray-800">Mark List</h3>
           <table className="w-full mt-4 border-collapse">
             <tbody>
@@ -114,17 +83,6 @@ export const StudentResultCard = ({ student, isFailed }) => {
           All Rights © Reserved for Falahiyyakalarundi
         </div>
       </div>
-
-      {/* Download Button */}
-      {/* <div className="md:bg-white p-6 text-center mt-10">
-        <button
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2 mx-auto transition-all transform hover:scale-105"
-          onClick={handleDownloadImage}
-        >
-          <DownloadForOfflineIcon />
-          Download Image
-        </button>
-      </div> */}
     </>
   );
 };

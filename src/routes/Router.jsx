@@ -7,6 +7,7 @@ import { ResultPage } from "../pages/ResultPage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { ResultHome } from "../components/result/ResutlHome";
 import { AttendancePage } from "../pages/AttendancePage";
+import { CountdownPage } from "../pages/CountdownPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomePage />,
+    element: <CountdownPage />,
   },
   {
     element: <StudentLayout />,

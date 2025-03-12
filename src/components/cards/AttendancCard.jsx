@@ -4,7 +4,7 @@ export const AttendanceCard = ({ attendance }) => {
   // Calculate attendance percentage
   const attendancePercentage = (
     (attendance?.presentDays / attendance?.totalDays) *
-      100 || 75
+      100 || 0
   ).toFixed(2);
 
   // Calculate progress ring parameters
@@ -13,7 +13,7 @@ export const AttendanceCard = ({ attendance }) => {
   const progress = (circumference * (100 - attendancePercentage)) / 100;
 
   return (
-    <div className="max-w-sm md:max-w-md lg:max-w-full mx-auto bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-102 hover:shadow-3xl border border-gray-100">
+    <div className="w-auto mx-auto bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-102 hover:shadow-3xl border border-gray-100">
       {/* Header with Progress Ring */}
       <div className="flex items-center justify-between mb-8">
         <div>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StudentResultCard } from "../cards/StudentCard-1";
 import { useSelector } from "react-redux";
 import { AttendanceCard } from "../cards/AttendancCard";
 import axios from "axios";
-
+import html2canvas from "html2canvas";
 export const Result = () => {
+  const resultRef = useRef(null);
   const [studentData, setStudentData] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [classRank, setClassRank] = useState(null);
@@ -164,15 +165,34 @@ export const Result = () => {
 
   const isFailed = studentData.rank === "Failed";
 
+  const downloadImage = () => {
+    if (resultRef.current) {
+      html2canvas(resultRef.current).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = `Result_${studentData.name}.png`;
+        link.click();
+      });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8 pt-10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-10 px-1 md:px-6 lg:px-8 pt-10 ">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10 border ">
-          <h1 className="text-4xl text-center font-bold text-gray-900 mb-2">
+        <div className="text-center mb-5 border bg-[#fff] bg-white rounded-xl shadow-2xl p-5">
+          {/* Title */}
+          <h1 className="text-2xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 text-center mb-3">
             AL Madrassathul Falahiyya Kalarundi
           </h1>
-          <p className="text-lg text-gray-600">Exam Result Board</p>
+
+          {/* Subtitle */}
+          <div className="relative">
+            <p className="text-md md:text-xl text-gray-600 font-medium">
+              Exam Result Board
+            </p>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"></div>
+          </div>
         </div>
 
         {/* Result Summary Card */}
@@ -215,9 +235,23 @@ export const Result = () => {
         </div>
 
         {/* Student Result Card */}
-        <StudentResultCard student={studentData} isFailed={isFailed} />
+        <div ref={resultRef} className="bg-white p-6 rounded-xl shadow-lg">
+          <StudentResultCard
+            student={studentData}
+            isFailed={studentData.rank === "Failed"}
+          />
+        </div>
         <div className="mt-10">
           <AttendanceCard attendance={attendanceData} />
+        </div>
+        {/* Download Button */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={downloadImage}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300"
+          >
+            Download as Image
+          </button>
         </div>
       </div>
     </div>

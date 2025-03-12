@@ -5,8 +5,20 @@ import { StudentCard_2 } from "../cards/StudentCard-2";
 import { MarkPopupForm } from "./Popup";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
 
 export const ResultHome = () => {
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const targetDate = new Date("2025-03-18T10:00:00").getTime();
+  //   const now = new Date().getTime();
+
+  //   if (now < targetDate) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
+
   const { exams } = useSelector((state) => state.exam);
   const { classes } = useSelector((state) => state.class);
   const [topStudents, setTopStudents] = useState({});
@@ -85,16 +97,16 @@ export const ResultHome = () => {
     .filter((cls) => cls.classNumber !== "5 A")
     .sort((a, b) => parseInt(a.classNumber) - parseInt(b.classNumber));
 
-    const sliderSettings = {
-      dots: true,
-      infinite: true,
-      speed: 200,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-      autoplay: true, // Enable auto sliding
-      autoplaySpeed: 2000, // Adjust the speed (3000ms = 3 seconds)
-    };
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 200,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true, // Enable auto sliding
+    autoplaySpeed: 2000, // Adjust the speed (3000ms = 3 seconds)
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6 ">
@@ -111,19 +123,19 @@ export const ResultHome = () => {
       </div>
 
       {!exams ||
-        exams.length === 0 && (
+        (exams.length === 0 && (
           <div className="container min-h-[50vh] flex justify-center items-center">
             <h1 className="text-center">Please Wait...</h1>
           </div>
-        )}
+        ))}
 
       <div className="mt-10 w-full">
         {!exams ||
-          exams.length !== 0 && (
-            <h2 className="text-[24px] md:text-[30px] font-bold text-gray-800 text-center "> 
+          (exams.length !== 0 && (
+            <h2 className="text-[24px] md:text-[30px] font-bold text-gray-800 text-center ">
               Class Toppers
             </h2>
-          )}
+          ))}
 
         {sortedClasses.map((cls) => (
           <div key={cls._id} className="mt-6 pt-3 pb-8">
