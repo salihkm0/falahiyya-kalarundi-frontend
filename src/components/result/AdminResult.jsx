@@ -71,7 +71,7 @@ export const AdminResult = () => {
           };
         });
 
-        topStudentsByClass[classId] = rankedPassedStudents.slice(0, 3);
+        topStudentsByClass[classId] = rankedPassedStudents.slice(0, 30);
       });
 
       setTopStudents(topStudentsByClass);

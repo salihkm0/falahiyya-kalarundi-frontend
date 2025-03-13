@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 const CountdownTimer = () => {
-  const targetDate = new Date("2025-03-18T10:00:00").getTime();
+//   const targetDate = new Date("2025-03-13T17:40:00").getTime();
+  const targetDate = new Date("2025-03-15T15:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState(targetDate - new Date().getTime());
 
   useEffect(() => {
@@ -43,7 +44,8 @@ const CountdownTimer = () => {
         </h1>
         <div className="relative">
           <p className="text-md md:text-xl text-gray-600 font-medium">
-            Result Announcement Countdown (Date : <strong> 18th March 2025</strong> Time : <strong> 10:00 AM</strong>)
+            Result Announcement Countdown (Date :{" "}
+            <strong> 15th March 2025</strong> Time : <strong> 03:00 PM</strong>)
           </p>
           <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"></div>
         </div>

@@ -8,7 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 import CountdownTimer from "../CountdownTimer";
 
 export const ResultHome = () => {
-  const targetDate = new Date("2025-03-18T10:00:00").getTime();
+  const targetDate = new Date("2025-03-15T15:00:00").getTime();
+  // const targetDate = new Date("2025-03-13T17:40:00").getTime();
   const now = new Date().getTime();
   const showCountdown = now < targetDate;
 
