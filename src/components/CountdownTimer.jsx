@@ -7,7 +7,14 @@ const CountdownTimer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      setTimeLeft(targetDate - now);
+      const remainingTime = targetDate - now;
+
+      if (remainingTime <= 0) {
+        clearInterval(interval);
+        window.location.reload(); // Refresh the page when countdown ends
+      } else {
+        setTimeLeft(remainingTime);
+      }
     }, 1000);
 
     return () => clearInterval(interval);
@@ -22,12 +29,16 @@ const CountdownTimer = () => {
     return { days, hours, minutes, seconds };
   };
 
+  if (timeLeft <= 0) {
+    return null; // Hide countdown when time is up
+  }
+
   const { days, hours, minutes, seconds } = getFormattedTime(timeLeft);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="text-center mb-5 border bg-white rounded-xl shadow-2xl p-5">
-        <h1 className="text-2xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 text-center mb-3">
+        <h1 className="text-2xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 text-center mb-3 uppercase">
           AL Madrassathul Falahiyya Kalarundi
         </h1>
         <div className="relative">

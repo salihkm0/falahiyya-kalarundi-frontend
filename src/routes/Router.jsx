@@ -8,6 +8,7 @@ import { LoadingPage } from "../pages/LoadingPage";
 import { ResultHome } from "../components/result/ResutlHome";
 import { AttendancePage } from "../pages/AttendancePage";
 import { CountdownPage } from "../pages/CountdownPage";
+import { AdminResult } from "../components/result/AdminResult";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "/result",
         element: <ResultHome />,
+      },
+      {
+        path: "/10610/result",
+        element: <AdminResult />,
       },
       {
         path: "/result/:studId",

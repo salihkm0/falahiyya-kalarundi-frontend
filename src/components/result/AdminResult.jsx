@@ -7,11 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CountdownTimer from "../CountdownTimer";
 
-export const ResultHome = () => {
-  const targetDate = new Date("2025-03-18T10:00:00").getTime();
-  const now = new Date().getTime();
-  const showCountdown = now < targetDate;
-
+export const AdminResult = () => {
   const { exams } = useSelector((state) => state.exam);
   const { classes } = useSelector((state) => state.class);
   const [topStudents, setTopStudents] = useState({});
@@ -103,9 +99,6 @@ export const ResultHome = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6">
-      {showCountdown ? (
-        <CountdownTimer />
-      ) : (
         <>
           <div className="mt-10 p-5 border shadow-md flex flex-col items-center bg-white rounded-md w-full">
             <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center uppercase">
@@ -157,7 +150,6 @@ export const ResultHome = () => {
             ))}
           </div>
         </>
-      )}
     </div>
   );
 };
