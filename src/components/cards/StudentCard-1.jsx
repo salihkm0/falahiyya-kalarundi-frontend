@@ -79,7 +79,7 @@ export const StudentResultCard = ({ student, isFailed }) => {
         </div>
 
         {/* Footer Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white flex justify-center shadow-xl items-center py-3 md:rounded-b-xl text-sm">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white justify-center shadow-xl items-center py-3 md:rounded-b-xl text-sm hidden md:flex">
           All Rights © Reserved for Falahiyyakalarundi
         </div>
       </div>

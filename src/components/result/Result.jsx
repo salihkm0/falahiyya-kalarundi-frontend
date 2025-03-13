@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { AttendanceCard } from "../cards/AttendancCard";
 import axios from "axios";
 import html2canvas from "html2canvas";
+import { RankCard } from "../cards/RankCard";
 export const Result = () => {
   const resultRef = useRef(null);
   const [studentData, setStudentData] = useState(null);
@@ -182,7 +183,7 @@ export const Result = () => {
         {/* Header */}
         <div className="text-center mb-5 border bg-[#fff] bg-white rounded-xl shadow-2xl p-5">
           {/* Title */}
-          <h1 className="text-2xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 text-center mb-3">
+          <h1 className="text-2xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600 text-center mb-3 uppercase">
             AL Madrassathul Falahiyya Kalarundi
           </h1>
 
@@ -244,6 +245,10 @@ export const Result = () => {
         <div className="mt-10">
           <AttendanceCard attendance={attendanceData} />
         </div>
+        <div className="mt-10">
+          <RankCard />
+        </div>
+
         {/* Download Button */}
         <div className="mt-6 text-center">
           <button

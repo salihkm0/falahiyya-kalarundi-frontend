@@ -111,7 +111,7 @@ export const ResultHome = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 px-4 sm:px-6 ">
       <div className="mt-10 p-5 border shadow-md flex flex-col items-center bg-white rounded-md w-full">
-        <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-800 text-center uppercase">
           Welcome to AL Madrassathul Falahiyya Kalarundi
         </h1>
         <p className="text-sm sm:text-lg text-gray-600 text-center">
