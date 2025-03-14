@@ -250,7 +250,7 @@ export const Result = () => {
         </div>
 
         {/* Download Button */}
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center hidden md:block">
           <button
             onClick={downloadImage}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300"

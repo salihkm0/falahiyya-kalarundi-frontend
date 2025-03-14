@@ -26,7 +26,7 @@ const markSlice = createSlice({
   },
   reducers: {
     setStudentMarks: (state, action) => {
-      state.studentMarks = action.payload; // Store marks globally
+      state.studentMarks = action.payload; 
     },
   },
   extraReducers: (builder) => {
@@ -46,5 +46,5 @@ const markSlice = createSlice({
   },
 });
 
-export const { setStudentMarks } = markSlice.actions; // Export the action
+export const { setStudentMarks } = markSlice.actions; 
 export default markSlice.reducer;
