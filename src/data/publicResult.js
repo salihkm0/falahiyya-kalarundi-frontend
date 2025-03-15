@@ -1,58 +1,138 @@
 export const publicResult = [
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-    {
-        "id": 1,
-        "student_name": "Salih Km",
-        "father_name" : "Abdulla",
-        "rank": "TOP PLUS",
-        "mark" : "597",
-        "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400"
-    },
-]
+  {
+    id: 41494,
+    student_name: "AYISHA MANHA MK",
+    father_name: "SHAREEF MK",
+    rank: "Distinction",
+    mark: 481,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 93,
+        "Li.Qur/Tajvid": 96,
+        "Aqeeda": 97,
+        "Tariq/Aqlaq": 95,
+        "Quran /Hifz": 100,
+      },
+    ],
+  },
+  {
+    id: 41495,
+    student_name: "NAJVA MK",
+    father_name: "NOUSHAD MK",
+    rank: "Distinction",
+    mark: 480,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 92,
+        "Li.Qur/Tajvid": 95,
+        "Aqeeda": 97,
+        "Tariq/Aqlaq": 96,
+        "Quran /Hifz": 100,
+      },
+    ],
+  },
+  {
+    id: 41492,
+    student_name: "MUHAMMED RAYYAN KM",
+    father_name: "ABDU RASHEED KM",
+    rank: "Distinction",
+    mark: 476,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 88,
+        "Li.Qur/Tajvid": 94,
+        "Aqeeda": 97,
+        "Tariq/Aqlaq": 97,
+        "Quran /Hifz": 100,
+      },
+    ],
+  },
+  {
+    id: 41491,
+    student_name: "SHAMNAD P",
+    father_name: "SHAMSUDHEEN P",
+    rank: "Distinction",
+    mark: 466,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 93,
+        "Li.Qur/Tajvid": 89,
+        "Aqeeda": 97,
+        "Tariq/Aqlaq": 88,
+        "Quran /Hifz": 99,
+      },
+    ],
+  },
+  {
+    id: 41493,
+    student_name: "MUHAMMED SIYAD K",
+    father_name: "MUJEEBURAHMAN K",
+    rank: "Distinction",
+    mark: 464,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 89,
+        "Li.Qur/Tajvid": 90,
+        "Aqeeda": 97,
+        "Tariq/Aqlaq": 89,
+        "Quran /Hifz": 99,
+      },
+    ],
+  },
+  {
+    id: 41496,
+    student_name: "FATHIMA YASHA KU",
+    father_name: "ABDUL ASEES KU",
+    rank: "Distinction",
+    mark: 410,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 80,
+        "Li.Qur/Tajvid": 82,
+        "Aqeeda": 82,
+        "Tariq/Aqlaq": 81,
+        "Quran /Hifz": 85,
+      },
+    ],
+  },
+  {
+    id: 41490,
+    student_name: "MUHAMMED HADIY KM",
+    father_name: "ABDUL HAKEEM KM",
+    rank: "First Class",
+    mark: 415,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 66,
+        "Li.Qur/Tajvid": 79,
+        "Aqeeda": 93,
+        "Tariq/Aqlaq": 80,
+        "Quran /Hifz": 97,
+      },
+    ],
+  },
+  {
+    id: 41497,
+    student_name: "FATHIMA RANA OK",
+    father_name: "MUHAMMED ABDUL AHAD",
+    rank: "First Class",
+    mark: 387,
+    image: "",
+    subjects: [
+      {
+        "Fiqh": 67,
+        "Li.Qur/Tajvid": 74,
+        "Aqeeda": 89,
+        "Tariq/Aqlaq": 72,
+        "Quran /Hifz": 85,
+      },
+    ],
+  },
+];

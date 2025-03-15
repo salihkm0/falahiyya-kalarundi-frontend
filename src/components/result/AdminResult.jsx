@@ -6,8 +6,7 @@ import { MarkPopupForm } from "./Popup";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CountdownTimer from "../CountdownTimer";
-import { PublicResult } from "./PublicResult";
-import { publicResult } from "../../data/publicResult.js";
+import { Public } from "./Public.jsx";
 
 export const AdminResult = () => {
   const { exams } = useSelector((state) => state.exam);
@@ -114,24 +113,16 @@ export const AdminResult = () => {
           </div>
         </div>
 
+        <>
+          <Public  />
+        </>
+
         {!exams ||
           (exams.length === 0 && (
             <div className="container min-h-[50vh] flex justify-center items-center">
               <h1 className="text-center">Please Wait...</h1>
             </div>
           ))}
-
-        {/* <div className="my-5 w-full flex flex-col justify-between items-center">
-          <h1 className="my-3 text-[24px] md:text-[30px] font-bold text-gray-800 text-center uppercase">
-            Samastha Public Exam Result
-          </h1>
-          <div className="flex justify-between items-center w-full overflow-x-scroll gap-3 overscroll-none">
-            {publicResult.map((result) => (
-              <PublicResult key={result.id} result={result} />
-            ))}
-          </div>
-        </div> */}
-
         <div className="mt-10 w-full">
           {!exams ||
             (exams.length !== 0 && (

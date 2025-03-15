@@ -6,6 +6,7 @@ import { MarkPopupForm } from "./Popup";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CountdownTimer from "../CountdownTimer";
+import { Public } from "./Public";
 
 export const ResultHome = () => {
   const targetDate = new Date("2025-03-15T15:00:00").getTime();
@@ -120,6 +121,10 @@ export const ResultHome = () => {
             </div>
           </div>
 
+          <>
+            <Public />
+          </>
+
           {!exams ||
             (exams.length === 0 && (
               <div className="container min-h-[50vh] flex justify-center items-center">
@@ -162,4 +167,3 @@ export const ResultHome = () => {
     </div>
   );
 };
-

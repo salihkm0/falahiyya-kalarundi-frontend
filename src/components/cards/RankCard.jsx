@@ -51,7 +51,7 @@ export const RankCard = () => {
         </span> */}
         <div className="px-4 py-3 rounded-xl bg-amber-50 border border-amber-200">
           <p className="text-amber-800 text-sm font-medium">
-            Note: The specified percentage must be achieved in each individual subject to qualify for the respective grade.
+            Note: ഓരോ വിഷയത്തിലും നിശ്ചിത ശതമാനം മാർക്ക് നേടിയാൽ മാത്രമേ അതാത് ഗ്രേഡിലേക്ക് യോഗ്യത നേടാനാകൂ.
           </p>
         </div>
       </div>
