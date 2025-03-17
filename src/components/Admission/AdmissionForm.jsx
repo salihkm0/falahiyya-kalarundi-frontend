@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { School, User, Home, FileText, BookOpen } from "lucide-react";
 import toast from "react-hot-toast";
-
+import axios from "axios";
 const FormSection = ({ title, icon, children }) => (
   <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
     <div className="flex items-center gap-2 mb-4 text-green-700">
@@ -33,14 +33,33 @@ const InputField = ({
 );
 
 const MadrasaAdmissionForm = () => {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue,reset } = useForm();
   useEffect(() => {
     setValue("madrasaName", "AL Madrassathul Falahiyya Kalarundi - 10610");
   }, [setValue]);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Form Data:", data);
-    toast.success("Application Submitted");
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `https://falahiyya-kalarundi-backend.onrender.com/api/admission`,
+        data
+      );
+      console.log("response: " , res)
+      if (res.status === 201) {
+        toast.success("Application Submitted");
+        setLoading(false);
+        reset()
+        // navigate
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -196,6 +215,12 @@ const MadrasaAdmissionForm = () => {
               required={false}
             />
             <InputField
+              label="T C Number"
+              register={register}
+              name="tcNumber"
+              required={false}
+            />
+            <InputField
               label="Certificate Number & Class (പൊതുപരീക്ഷ പാസ്സായ ക്ലാസ്സ്‌, സർട്ടിഫിക്കറ്റ് നമ്പർ)"
               register={register}
               name="certificateNumber"
@@ -209,7 +234,7 @@ const MadrasaAdmissionForm = () => {
             type="submit"
             className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:ring-4 focus:ring-green-200 transition duration-200 ease-in-out transform hover:-translate-y-1"
           >
-            Submit Application
+            {loading ? `Submitting...` : `Submit Application`}
           </button>
         </div>
       </form>
