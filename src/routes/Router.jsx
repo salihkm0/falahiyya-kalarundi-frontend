@@ -9,6 +9,7 @@ import { ResultHome } from "../components/result/ResutlHome";
 import { AttendancePage } from "../pages/AttendancePage";
 import { CountdownPage } from "../pages/CountdownPage";
 import { AdminResult } from "../components/result/AdminResult";
+import { AdmissionPage } from "../pages/AdmissionPage";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,11 @@ export const router = createBrowserRouter([
         path: "/attendance",
         element: <AttendancePage />,
       },
+      {
+        path: "/admission",
+        element: <AdmissionPage />,
+      },
+
       // {
       //   path: "/home",
       //   element: <HomePage />,

@@ -1,0 +1,220 @@
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { School, User, Home, FileText, BookOpen } from "lucide-react";
+import toast from "react-hot-toast";
+
+const FormSection = ({ title, icon, children }) => (
+  <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="flex items-center gap-2 mb-4 text-green-700">
+      {icon}
+      <h3 className="text-lg font-semibold">{title}</h3>
+    </div>
+    <div className="space-y-4">{children}</div>
+  </div>
+);
+
+const InputField = ({
+  label,
+  type = "text",
+  register,
+  name,
+  required = true,
+}) => (
+  <div className="w-full">
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+    <input
+      type={type}
+      {...register(name, { required })}
+      className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 ease-in-out"
+    />
+  </div>
+);
+
+const MadrasaAdmissionForm = () => {
+  const { register, handleSubmit, setValue } = useForm();
+  useEffect(() => {
+    setValue("madrasaName", "AL Madrassathul Falahiyya Kalarundi - 10610");
+  }, [setValue]);
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+    toast.success("Application Submitted");
+  };
+
+  return (
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-800 mb-2 uppercase">
+          AL Madrassathul Falahiyya Kalarundi
+        </h1>
+        <h1 className="text-md sm:text-xl font-bold text-gray-800 mb-2">
+          Madrasa Admission Application
+        </h1>
+        <p className="text-gray-600">Academic Year 2025 - 2026</p>
+      </div>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 sm:space-y-6"
+      >
+        <fieldset disabled>
+          <FormSection
+            title="Institution Details"
+            icon={<School className="w-5 h-5" />}
+          >
+            <InputField
+              label="Name & Recognition Number of Madrasa"
+              register={register}
+              name="madrasaName"
+              value="AL Madrassathul Falahiyya Kalarundi - 10610"
+            />
+          </FormSection>
+        </fieldset>
+
+        <FormSection
+          title="Student Information"
+          icon={<User className="w-5 h-5" />}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InputField
+              label="Student Name with initials (വിദ്യാർഥിയുടെ പേരും ഇനിഷ്യലും)"
+              register={register}
+              name="studentName"
+            />
+            <InputField
+              label="Aadhaar Number (ആധാർ നമ്പർ)"
+              register={register}
+              name="aadhaar"
+            />
+            <InputField
+              label="Date of Birth (ജനന തിയതി)"
+              type="date"
+              register={register}
+              name="dob"
+            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Gender
+              </label>
+              <select
+                {...register("gender")}
+                className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 ease-in-out"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
+        </FormSection>
+
+        <FormSection
+          title="Contact Information"
+          icon={<Home className="w-5 h-5" />}
+        >
+          <InputField
+            label="House Name & Address (വീട്ടുപേര്, വിലാസം)"
+            register={register}
+            name="houseAddress"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InputField
+              label="Phone Number"
+              type="tel"
+              register={register}
+              name="phone"
+            />
+            <InputField
+              label="Identification Marks (തിരിച്ചറിയാനുള്ള അടയാളങ്ങൾ)"
+              register={register}
+              name="identificationMarks"
+            />
+          </div>
+        </FormSection>
+
+        <FormSection
+          title="Guardian Details"
+          icon={<FileText className="w-5 h-5" />}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InputField
+              label="Father's Name (പിതാവിന്റെ പേര്)"
+              register={register}
+              name="fatherName"
+            />
+            <InputField
+              label="Guardian Name & Address (രക്ഷകർത്താവിന്റെ പേര്, വിലാസം)"
+              register={register}
+              name="guardianName"
+            />
+            <InputField
+              label="Relation with Student (രക്ഷകർത്താവിന് വിദ്യാർഥിയുമായുള്ള ബന്ധം)"
+              register={register}
+              name="relation"
+            />
+            <InputField
+              label="Guardian's Occupation (രക്ഷകർത്താവിന്റെ പ്രവൃത്തി)"
+              register={register}
+              name="guardianOccupation"
+            />
+          </div>
+        </FormSection>
+
+        <FormSection
+          title="Admission Details"
+          icon={<BookOpen className="w-5 h-5" />}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Standard to which admitted (ചേരുന്ന ക്ലാസ്സ്‌‌)
+              </label>
+              <select
+                {...register("classAdmitted")}
+                className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 ease-in-out"
+              >
+                <option value="">Select Class</option>
+                {[...Array(7)].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <br />
+            <p className="w-full md:my-2">
+              If you are coming from another madrasa (നിങ്ങൾ മറ്റ് മദ്രസയിൽ
+              നിന്നാണ് വരുന്നതെങ്കിൽ)
+            </p>
+            <br />
+            <InputField
+              label="Former Madrasa Name (മദ്രസയുടെ പേര്, അംഗീകരണ നമ്പർ)"
+              register={register}
+              name="formerMadrasa"
+              required={false}
+            />
+            <InputField
+              label="Certificate Number & Class (പൊതുപരീക്ഷ പാസ്സായ ക്ലാസ്സ്‌, സർട്ടിഫിക്കറ്റ് നമ്പർ)"
+              register={register}
+              name="certificateNumber"
+              required={false}
+            />
+          </div>
+        </FormSection>
+
+        <div className="flex justify-center pt-6">
+          <button
+            type="submit"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:ring-4 focus:ring-green-200 transition duration-200 ease-in-out transform hover:-translate-y-1"
+          >
+            Submit Application
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default MadrasaAdmissionForm;
