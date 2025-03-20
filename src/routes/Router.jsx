@@ -11,6 +11,7 @@ import { CountdownPage } from "../pages/CountdownPage";
 import { AdminResult } from "../components/result/AdminResult";
 import { AdmissionPage } from "../pages/AdmissionPage";
 import AdmissionTable from "../components/Admission/AdmissionTable";
+import AdmissionLanding from "../components/Admission/AdmissionLanding";
 
 export const router = createBrowserRouter([
   {
@@ -50,8 +51,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admission",
+        element: <AdmissionLanding />,
+      },
+      {
+        path: "/admission-form",
         element: <AdmissionPage />,
       },
+      
 
       {
         path: "/admission-list",
