@@ -289,7 +289,7 @@ const InputField = ({
 );
 
 const MadrasaAdmissionForm = () => {
-  ScrollToTop()
+  ScrollToTop();
   const { register, handleSubmit, setValue, watch, reset } = useForm();
   const [loading, setLoading] = useState(false);
   const [sameAsPhone, setSameAsPhone] = useState(false);
@@ -329,20 +329,24 @@ const MadrasaAdmissionForm = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-3xl font-bold text-gray-800 mb-2 uppercase">
-          AL Madrassathul Falahiyya Kalarundi
-        </h1>
-        <h1 className="text-md sm:text-xl font-bold text-gray-800 mb-2">
-          Madrasa Admission Application
-        </h1>
-        <p className="text-gray-600">Academic Year 2025 - 2026</p>
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-8 px-4 mb-8">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-2 uppercase">
+            AL Madrassathul Falahiyya Kalarundi
+          </h1>
+          <div className="text-lg sm:text-xl opacity-90 mb-2">
+            Madrasa Admission Application
+          </div>
+          <div className="text-sm sm:text-base opacity-80">
+            Academic Year 2025 - 2026
+          </div>
+        </div>
       </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 sm:space-y-6"
+        className="space-y-4 sm:space-y-6 px-1"
       >
         <fieldset disabled>
           <FormSection
@@ -419,7 +423,8 @@ const MadrasaAdmissionForm = () => {
                 onChange={() => setSameAsPhone(!sameAsPhone)}
               />
               <label htmlFor="sameAsPhone" className="text-sm text-gray-700">
-                Same as Phone Number (വാട്ട്‌സ്ആപ്പ് നമ്പറും ഫോൺ നമ്പറും ഒന്നുതന്നെയാണ്)
+                Same as Phone Number (വാട്ട്‌സ്ആപ്പ് നമ്പറും ഫോൺ നമ്പറും
+                ഒന്നുതന്നെയാണ്)
               </label>
             </div>
             <InputField

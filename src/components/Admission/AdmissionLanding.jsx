@@ -23,7 +23,7 @@ const AdmissionLanding = () => {
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-8 px-4 mb-8">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-2xl sm:text-4xl font-bold mb-2">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-2 uppercase">
             AL Madrassathul Falahiyya Kalarundi
           </h1>
           <div className="text-lg sm:text-xl opacity-90 mb-2">
