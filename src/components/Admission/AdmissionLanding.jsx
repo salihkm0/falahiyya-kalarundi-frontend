@@ -138,7 +138,7 @@ const AdmissionLanding = () => {
                     <div>
                       <p className="font-semibold text-gray-700">തിയതി</p>
                       <p className="text-gray-600">
-                        2025 മാർച്ച് 26 (ചൊവ്വാഴ്ച)
+                        2025 മാർച്ച് 26 (ബുധനാഴ്ച)
                       </p>
                     </div>
                   </div>
