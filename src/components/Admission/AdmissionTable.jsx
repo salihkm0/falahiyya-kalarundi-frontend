@@ -45,6 +45,7 @@ const AdmissionTable = () => {
                 "DOB",
                 "Gender",
                 "Phone",
+                "Whatsapp",
                 "Father Name",
                 "Guardian Name",
                 "Relation",
@@ -72,6 +73,7 @@ const AdmissionTable = () => {
                   <td className="py-4 px-6 text-sm text-gray-700">{new Date(admission.dob).toLocaleDateString()}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.gender}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.phone}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{admission.whatsapp}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.fatherName}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.guardianName}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.relation}</td>
