@@ -195,12 +195,12 @@ const AdmissionLanding = () => {
             </div>
 
             {/* Warning Message */}
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+            {/* <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
               <p className="text-red-700 font-medium text-center">
                 ദയവായി സമയബന്ധിതമായി മദ്രസയിൽ ഹാജരാകുക. വൈകിയെത്തുന്നവർക്ക്
                 പ്രവേശനം അനുവദിക്കുകയില്ല.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
