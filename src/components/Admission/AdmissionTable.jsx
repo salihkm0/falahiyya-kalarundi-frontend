@@ -54,6 +54,7 @@ const AdmissionTable = () => {
                 "Former Madrasa",
                 "Certificate Number",
                 "TC Number",
+                "Identification Marks"
               ].map((heading, index) => (
                 <th key={index} className="py-4 px-6 text-left text-sm uppercase font-semibold">
                   {heading}
@@ -82,6 +83,7 @@ const AdmissionTable = () => {
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.formerMadrasa || "--"}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.certificateNumber || "--"}</td>
                   <td className="py-4 px-6 text-sm text-gray-700">{admission.tcNumber || "--"}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{admission.identificationMarks || "--"}</td>
                 </tr>
               ))
             ) : (
