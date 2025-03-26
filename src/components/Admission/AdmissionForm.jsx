@@ -372,9 +372,10 @@ const MadrasaAdmissionForm = () => {
               name="studentName"
             />
             <InputField
-              label="Aadhaar Number (ആധാർ നമ്പർ)*"
+              label="Aadhaar Number (ആധാർ നമ്പർ)"
               register={register}
               name="aadhaar"
+              required={false}
             />
             <InputField
               label="Date of Birth (ജനന തിയതി)*"
